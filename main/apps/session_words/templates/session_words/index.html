@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Session Words!</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'session_words/css/session_words.css' %}">
+</head>
+<body>
+    <div id="wrapper">
+        <div id="leftcolumn">
+            <h1>Add a new word</h1>
+            <form action="/process" method="POST">
+                {% csrf_token %}
+                <input type="text" id="textbox" name="word">
+                <h5>Choose a <span class="red">Co</span><span class="blue">lo</span><span class="green">r</span></h5>
+                <div class="radio">
+                    <input type="radio" name="color_group" value="red"><p class='red'>Red</p>
+                    <input type="radio" name="color_group" value="blue"><p class="blue">Blue</p>
+                    <input type="radio" name="color_group" value="green"><p class="green">Green</p>
+                </div>
+                <input type="checkbox" name='big' value='big' class="checkbox"><p>show in BIG fonts!</p><br>
+                <input type="submit" value="Add to Session" id="add_button">
+            </form>
+        </div>
+        <div id="line">
+            
+        </div>
+        <div id="rightcolumn">
+            <form action="/reset" method="POST">
+                {% csrf_token %}
+                <input type="submit" value="Clear Session" id="clear_button">
+            </form>
+            <div id="display">
+                <h5>List of words you've input so far...</h5><br>
+                {% if request.session.words %}
+                    {% for all in request.session.words %}
+                        * <p class="{{all.color}}" id="{{all.big}}">{{all.word}}</p><p>Created at: {{all.created_at}}</p><br>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
