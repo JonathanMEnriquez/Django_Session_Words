@@ -15,8 +15,12 @@ def process(request):
         if len(request.POST['word']) > 0:
             word = {}
             word['word'] = request.POST['word']
-            word['color'] = request.POST['color_group']
+            try:
+                word['color'] = request.POST['color_group']
+            except:
+                word['color'] = "none"
             word['created_at'] = datetime.now().strftime('%-I:%M:%S%p  %b %d, %Y')
+            
             try:
                 word['big'] = request.POST['big']
             except:
